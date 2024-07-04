@@ -23,12 +23,22 @@ window.Echo.channel('chat.2')
     });
 
 const receiverIds = Array.from({ length: 50 }, (_, i) => i + 1);
+const groupIds = Array.from({ length: 50 }, (_, i) => i + 1);
+
 
 receiverIds.forEach(receiverId => {
     window.Echo.channel(`chat.${receiverId}`)
         .listen('MessageSent', (e) => {
             console.log('MessageSent event received for receiver', receiverId, ':', e);
             Livewire.dispatch('messageReceived', { receiverId: receiverId, message: e.message });
+        });
+});
+
+groupIds.forEach(groupId => {
+    window.Echo.channel(`chat.group.${groupId}`)
+        .listen('MessageSent', (e) => {
+            console.log('MessageSent event received for receiver', groupId, ':', e);
+            Livewire.dispatch('messageReceived', { groupId: groupId });
         });
 });
 

@@ -16,20 +16,22 @@ class GroupMessageSent implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
-    public function __construct(public ChatMessage $message)
+    public function __construct(public ChatMessage $groupMessage)
     {
-        //
+//        dd($this->message);
     }
 
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
+     * @return array<int, Channel>
      */
     public function broadcastOn(): array
     {
+//        dd($this->message);
+
         return [
-            new Channel("chat.group.{$this->message->group_id}"),
+            new Channel("chat.group.{$this->groupMessage->group_id}"),
         ];
     }
 
@@ -41,7 +43,7 @@ class GroupMessageSent implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            'message' => $this->message->toArray(),
+            'message' => $this->groupMessage->toArray(),
         ];
     }
 }
