@@ -1,6 +1,7 @@
 import Echo from 'laravel-echo';
 
 import Pusher from 'pusher-js';
+
 window.Pusher = Pusher;
 
 window.Echo = new Echo({
@@ -13,9 +14,10 @@ window.Echo = new Echo({
     enabledTransports: ['ws', 'wss'],
 });
 
-/**
- * Testing Channels & Events & Connections
- */
-window.Echo.channel("delivery").listen("PackageSent", (event) => {
-    console.log(event);
-});
+// Listen for the MessageSent event on the private channel
+
+window.Echo.channel('chat.2')
+    .listen('MessageSent', (e) => {
+        console.log('MessageSent event received:', e);
+        Livewire.dispatch('messageReceived');
+    });
