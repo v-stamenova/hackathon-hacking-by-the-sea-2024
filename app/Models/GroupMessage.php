@@ -11,7 +11,17 @@ class GroupMessage extends Model
 
     protected $fillable = [
         'sender_id',
-        'room_id',
+        'group_id',
         'text'
     ];
+
+    public function sender()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
 }

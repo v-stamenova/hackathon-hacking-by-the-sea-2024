@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\MessageSent;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\RoomController;
 use App\Models\ChatMessage;
 use App\Models\User;
@@ -15,7 +16,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::resource('/rooms', RoomController::class);
+    Route::resource('/groups', GroupController::class);
 
     Route::get('/dashboard', function () {
         return view('dashboard');

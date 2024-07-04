@@ -8,43 +8,5 @@ use Illuminate\Support\Facades\Http;
 
 class RoomController extends Controller
 {
-    public function create()
-    {
-        return view('room.create');
-    }
 
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'topic' => 'required|string',
-            'goal' => 'required|string',
-        ]);
-
-        $response = Http::post('http://localhost:3000/session', [
-            'topic' => $validatedData['topic'],
-            'goal' => $validatedData['goal'],
-        ]);
-
-        if ($response->successful()) {
-            $responseData = $response->json();
-
-            $room = Room::create([
-                'topic' => $validatedData['topic'],
-                'goal' => $validatedData['goal'],
-                'url' => $responseData['url']
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'Failed to create session.',
-                'details' => $response->body(),
-            ], $response->status());
-        }
-
-        return redirect(route('rooms.show', $room));
-    }
-
-    public function show(Room $room)
-    {
-        return view('room.view', compact('room'));
-    }
 }

@@ -18,16 +18,16 @@ use Livewire\Component;
 class RoomChatComponent extends Component
 {
     public $message;
-    public $room;
+    public $group;
     public $sender;
     public $messages = [];
 
-    public function mount($roomId)
+    public function mount($groupId)
     {
         $this->sender = Auth::user();
-        $this->room = Room::find($roomId);
+        $this->group = Group::find($groupId);
         $this->messages = GroupMessage::where(function ($query) {
-            $query->where('room_id', $this->room->id);
+            $query->where('group_id', $this->group->id);
         })->get();
     }
 
@@ -35,26 +35,30 @@ class RoomChatComponent extends Component
     {
         $message = GroupMessage::create([
             'sender_id' => $this->sender->id,
-            'room_id' => $this->room->id,
+            'group_id' => $this->group->id,
             'text' => $this->message
         ]);
 
         broadcast(new GroupMessageSent($message));
+        $this->messages = GroupMessage::where('group_id', $this->group->id)
+            ->orderBy('created_at', 'asc')
+            ->get();
+
         $this->message = '';
     }
 
     #[On('groupMessageReceived')]
     public function retrieve()
     {
-        $this->messages = GroupMessage::where('room_id', $this->room->id)
+        $this->messages = GroupMessage::where('group_id', $this->group->id)
             ->orderBy('created_at', 'asc')
             ->get();
 
-        $this->lastMessage = $this->messages->last();
+        $lastMessage = $this->messages->last();
 
-        if (strpos($this->lastMessage->text, '@Daan') === 0) {
-            $response = Http::post($this->room->url, [
-                'message' => $this->lastMessage->text
+        if (strpos($lastMessage->text, '@Daan') === 0) {
+            $response = Http::post($this->group->url, [
+                'message' => $lastMessage->text
             ]);
 
             if ($response->successful()) {
@@ -62,14 +66,14 @@ class RoomChatComponent extends Component
                 $daanMessage = $responseBody['answer'][0]['text']['value'];
 
                 $message = GroupMessage::create([
-                    'room_id' => $this->room->id,
+                    'group_id' => $this->group->id,
                     'text' => $daanMessage
                 ]);
 
                 broadcast(new GroupMessageSent($message));
             } else {
                 Log::error('Failed to send message to external URL', [
-                    'url' => $this->room->url,
+                    'url' => $this->group->url,
                     'message' => $this->message,
                     'response' => $response->body()
                 ]);

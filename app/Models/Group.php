@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Group extends Model
 {
     use HasFactory;
+    protected $fillable = ['topic', 'goal', 'url'];
 
     public function users(): BelongsToMany
     {

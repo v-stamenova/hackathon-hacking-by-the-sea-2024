@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('group_messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('room_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('group_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('sender_id')->nullable()->references('id')->on('users')->onDelete('cascade');
             $table->text('text');
             $table->timestamps();
