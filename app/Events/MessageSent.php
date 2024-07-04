@@ -34,4 +34,16 @@ class MessageSent implements ShouldBroadcast
             new Channel("chat.{$this->message->receiver_id}"),
         ];
     }
+
+    /**
+     * Get the data to broadcast.
+     *
+     * @return array
+     */
+    public function broadcastWith(): array
+    {
+        return [
+            'message' => $this->message->toArray(),
+        ];
+    }
 }

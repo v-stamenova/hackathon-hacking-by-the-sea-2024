@@ -21,3 +21,14 @@ window.Echo.channel('chat.2')
         console.log('MessageSent event received:', e);
         Livewire.dispatch('messageReceived');
     });
+
+const receiverIds = Array.from({ length: 50 }, (_, i) => i + 1);
+
+receiverIds.forEach(receiverId => {
+    window.Echo.channel(`chat.${receiverId}`)
+        .listen('MessageSent', (e) => {
+            console.log('MessageSent event received for receiver', receiverId, ':', e);
+            Livewire.dispatch('messageReceived', { receiverId: receiverId, message: e.message });
+        });
+});
+

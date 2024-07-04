@@ -3,7 +3,7 @@
     <div class="flex-1 overflow-y-auto p-4 bg-gray-100">
         <div id="messages" class="space-y-4">
             <!-- Example message from another user -->
-            {{--<div class="flex items-start">
+ {{--           <div class="flex items-start">
                 <div class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center">
                     U
                 </div>
