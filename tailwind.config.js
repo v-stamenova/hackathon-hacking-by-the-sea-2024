@@ -10,7 +10,9 @@ export default {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
     ],
-
+    safelist: [
+        'border-red-500'
+    ],
     theme: {
         extend: {
             fontFamily: {

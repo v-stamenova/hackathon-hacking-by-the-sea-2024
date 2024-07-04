@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\MessageSent;
+use App\Http\Controllers\RoomController;
 use App\Models\ChatMessage;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,8 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    Route::resource('/rooms', RoomController::class);
+
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
