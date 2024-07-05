@@ -3,6 +3,7 @@
 use App\Events\MessageSent;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\TTSController;
 use App\Models\ChatMessage;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -55,4 +56,5 @@ Route::middleware([
         return $message;
     });
 });
+Route::post('/tts/synthesize', [TTSController::class, 'synthesize']);
 

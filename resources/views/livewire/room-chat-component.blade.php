@@ -24,14 +24,16 @@
                                 <p class="text-sm">{{$message->text}}</p>
                             </div>
                         @else
-                            <div class="w-10 h-10 rounded-full overflow-hidden bg-blue-500 text-white flex items-center justify-center">
-                                <img src="{{ url('/daan.png') }}" alt="DaanGPT" class="w-full h-full object-cover">
-                            </div>
-                            <div class="ml-3 p-2 bg-green-50 rounded-lg shadow text-sm">
+                            <div class="ml-3 p-2 bg-green-50 w-5/6 rounded-lg shadow text-sm relative group">
                                 <p class="text-xs text-left text-gray-700">DaanGPT</p>
-                                <x-markdown class="bg-green-50">
+                                <x-markdown class="messageTexts bg-green-50">
                                     {!! $message->text !!}
                                 </x-markdown>
+                                <button type="button" class="speakButton absolute p-2 bg-green-50 rounded-full text-gray-700 focus:outline-none speaker-button transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+                                    </svg>
+                                </button>
                             </div>
                         @endif
                     </div>
@@ -63,6 +65,39 @@
     </div>
 
     <style>
+        .relative {
+            position: relative;
+        }
+
+        .absolute {
+            position: absolute;
+        }
+
+        .transition-opacity {
+            transition: opacity 0.3s;
+        }
+
+        .opacity-0 {
+            opacity: 0;
+        }
+
+        .opacity-100 {
+            opacity: 1;
+        }
+
+        .group:hover .speaker-button {
+            opacity: 1;
+        }
+
+        .speaker-button {
+            bottom: 0.5rem;
+            right: -2rem;  /* Adjust this value to position the button to the right of the textbox */
+        }
+
+        .size-6 {
+            width: 24px;
+            height: 24px;
+        }
         /* Custom scrollbar styles */
         #messages-container::-webkit-scrollbar {
             width: 12px; /* Width of the scrollbar */
@@ -143,6 +178,44 @@
 </div>
 
 <script>
+    let audio = null; // Declare a global variable to hold the Audio object
+    let isPlaying = false; // Flag to track if audio is currently playing
+    const speakButtons = document.getElementsByClassName('speakButton');
+    const messageTexts = document.getElementsByClassName('messageTexts');
+
+    for (let i = 0; i < speakButtons.length; i ++) {
+        speakButtons[i].addEventListener('click', async function speak(event) {
+            if (!isPlaying) {
+                const response = await fetch('/tts/synthesize', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': `{{ csrf_token() }}`
+                    },
+                    body: JSON.stringify({text: messageTexts[i].innerText.replace(/<\/[^>]+(>|$)/g, "")})
+                });
+
+                const data = await response.json();
+                console.log(data);
+                if (data.success) {
+                    audio = new Audio(data.url);
+                    await audio.play();
+
+                    event.target.title = 'Pause';
+                    isPlaying = true;
+                } else {
+                    alert('smth went wrong');
+                }
+            } else {
+                audio.pause();
+                // Update UI: Change button text back to "Speak"
+                event.target.title = 'Speak';
+                isPlaying = false;
+            }
+        });
+    }
+
+
     document.addEventListener('livewire:load', function () {
         scrollToBottom();
     });
