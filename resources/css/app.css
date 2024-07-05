@@ -5,3 +5,26 @@
 [x-cloak] {
     display: none;
 }
+
+/* Global custom scrollbar styles */
+::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: transparent; /* Transparent background for the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.5); /* Gray color with 50% opacity */
+    border-radius: 9999px; /* Fully rounded like a pill */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(85, 85, 85, 0.5); /* Slightly darker gray with 50% opacity on hover */
+}
+
+/* For smooth scrolling */
+* {
+    scroll-behavior: smooth;
+}
