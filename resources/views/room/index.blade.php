@@ -1,14 +1,21 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            All sessions
-        </h2>
-        <h4 class="font-semibold text-gray-800 leading-tight">
-            This includes sessions you've created yourself and/or you've been invited to
-        </h4>
-    </x-slot>
+    <div class="w-full p-8 overflow-y-auto">
+        <div class="flex justify-between items-center pb-5">
+            <div>
+                <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
+                    Study group
+                </h2>
+                <h4 class="font-semibold text-lg text-gray-800 leading-tight">
+                    You can see all the sessions you've created or you were invited to by friends.
+                </h4>
+            </div>
+            <div>
+                <a href="{{ route('groups.create') }}" class="bg-emerald-500 text-white px-4 py-2 rounded-md shadow hover:bg-emerald-600">
+                    Create new group
+                </a>
+            </div>
+        </div>
 
-    <div class="py-9">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 h-screen bg-white rounded">
             <ul role="list" class="divide-y divide-gray-300">
                 @foreach($groups as $group)

@@ -60,6 +60,10 @@ class RoomChatComponent extends Component
             $response = Http::post($this->group->url, [
                 'message' => $lastMessage->text
             ]);
+            $this->sender->score = $this->sender->score + 5;
+            $this->sender->save();
+            $this->sender->fresh();
+            $this->sender->checkForAwards();
 
             if ($response->successful()) {
                 $responseBody = $response->json();
