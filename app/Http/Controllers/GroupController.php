@@ -6,10 +6,18 @@ use App\Models\Group;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class GroupController extends Controller
 {
+    public function index()
+    {
+        $groups = Auth::user()->groups;
+
+        return view('room.index', compact('groups'));
+    }
+
     public function create()
     {
         return view('room.create');
@@ -47,12 +55,15 @@ class GroupController extends Controller
 
         if ($emailArray) {
             foreach ($emailArray as $email) {
-                $user = User::find($email);
+                $user = User::where('email', $email)->first();
                 if ($user) {
                     $group->users()->attach($user);
                 }
             }
         }
+
+        $group->users()->attach(Auth::user());
+
 
         return redirect(route('groups.show', $group));
     }
