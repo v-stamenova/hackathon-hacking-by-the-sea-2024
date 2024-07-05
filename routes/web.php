@@ -1,6 +1,7 @@
 <?php
 
 use App\Events\MessageSent;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\RoomController;
 use App\Models\ChatMessage;
@@ -17,6 +18,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::resource('/groups', GroupController::class);
+    Route::resource('/users', ChatController::class);
 
     Route::get('/dashboard', function () {
         return view('dashboard');

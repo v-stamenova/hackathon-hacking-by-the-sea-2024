@@ -1,62 +1,72 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create a Room') }}
-        </h2>
-    </x-slot>
+    <div class="w-full p-8 overflow-y-auto">
+        <div class="pb-5">
+            <h2 class="font-semibold text-2xl text-gray-800 leading-tight">
+                Create study group
+            </h2>
+            <h4 class="font-semibold text-lg text-gray-800 leading-tight">
+                Start studying alongside friends and with the help of DaanGPT!
+            </h4>
+        </div>
+        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
+            <form action="{{ route('groups.store') }}" method="POST">
+                @csrf
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-                <form action="{{ route('groups.store') }}" method="POST">
-                    @csrf
+                <!-- Topic -->
+                <div class="mb-4">
+                    <label for="topic"
+                           class="block text-gray-700 text-sm font-bold mb-2 after:content-['*'] after:text-red-500">
+                        {{ __('Topic') }}
+                    </label>
+                    <input required type="text" id="topic" name="topic"
+                           class="shadow appearance-none border border-gray-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           placeholder="Enter the topic of the room">
+                </div>
 
-                    <!-- Topic -->
-                    <div class="mb-4">
-                        <label for="topic" class="block text-gray-700 text-sm font-bold mb-2 after:content-['*'] after:text-red-500">
-                            {{ __('Topic') }}
-                        </label>
-                        <input required type="text" id="topic" name="topic" class="shadow appearance-none border border-gray-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter the topic of the room">
-                    </div>
+                <!-- Goal -->
+                <div class="mb-4">
+                    <label for="goal"
+                           class="block text-gray-700 text-sm font-bold mb-2 after:content-['*'] after:text-red-500">
+                        {{ __('Goal') }}
+                    </label>
+                    <textarea required id="goal" name="goal" rows="4"
+                              class="shadow appearance-none border border-gray-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                              placeholder="Enter the goal of the group"></textarea>
+                </div>
 
-                    <!-- Goal -->
-                    <div class="mb-4">
-                        <label for="goal" class="block text-gray-700 text-sm font-bold mb-2 after:content-['*'] after:text-red-500">
-                            {{ __('Goal') }}
-                        </label>
-                        <textarea required id="goal" name="goal" rows="4" class="shadow appearance-none border border-gray-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter the goal of the group"></textarea>
-                    </div>
+                <!-- Select Users -->
+                <!-- Select Users -->
+                <div class="mb-4">
+                    <label for="user-email" class="block text-gray-700 text-sm font-bold mb-2">
+                        {{ __('Invite Users by Email') }}
+                    </label>
+                    <input type="email" id="user-email"
+                           class="shadow appearance-none border border-gray-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           placeholder="Enter user email">
+                    <p id="email-error" class="text-red-500 text-xs mt-2 hidden">Email must end with @hz.nl</p>
+                    <button type="button" onclick="addUser()"
+                            class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-700 focus:outline-none focus:shadow-outline mt-2">
+                        {{ __('Add User') }}
+                    </button>
+                </div>
 
-                    <!-- Select Users -->
-                    <!-- Select Users -->
-                    <div class="mb-4">
-                        <label for="user-email" class="block text-gray-700 text-sm font-bold mb-2">
-                            {{ __('Invite Users by Email') }}
-                        </label>
-                        <input type="email" id="user-email" class="shadow appearance-none border border-gray-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter user email">
-                        <p id="email-error" class="text-red-500 text-xs mt-2 hidden">Email must end with @hz.nl</p>
-                        <button type="button" onclick="addUser()" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-700 focus:outline-none focus:shadow-outline mt-2">
-                            {{ __('Add User') }}
-                        </button>
-                    </div>
+                <!-- Hidden Input for Emails -->
+                <input type="hidden" id="user-emails" name="user_emails">
 
-                    <!-- Hidden Input for Emails -->
-                    <input type="hidden" id="user-emails" name="user_emails">
+                <!-- Invited Users List -->
+                <div id="invited-users" class="mt-4">
+                    <h3 class="text-gray-700 text-sm font-bold mb-2">{{ __('Invited Users') }}</h3>
+                    <ul id="user-list" class="list-disc list-inside text-gray-700"></ul>
+                </div>
 
-                    <!-- Invited Users List -->
-                    <div id="invited-users" class="mt-4">
-                        <h3 class="text-gray-700 text-sm font-bold mb-2">{{ __('Invited Users') }}</h3>
-                        <ul id="user-list" class="list-disc list-inside text-gray-700"></ul>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <div class="mt-6">
-                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-700 focus:outline-none focus:shadow-outline">
-                            {{ __('Create Room') }}
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <!-- Submit Button -->
+                <div class="mt-6">
+                    <button type="submit"
+                            class="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-700 focus:outline-none focus:shadow-outline">
+                        {{ __('Create Room') }}
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </x-app-layout>

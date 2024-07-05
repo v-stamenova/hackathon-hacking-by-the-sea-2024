@@ -1,4 +1,4 @@
-<div x-data x-init="$nextTick(() => { scrollToBottom(); })" class="flex flex-col h-full">
+<div x-data x-init="$nextTick(() => { scrollToBottom(); })" class="flex flex-col h-5/6">
     <!-- Chat messages container -->
     <div id="messages-container" class="flex-1 overflow-auto p-4 bg-gray-100">
         <div id="messages" class="space-y-4">
@@ -24,8 +24,8 @@
                                 <p class="text-sm">{{$message->text}}</p>
                             </div>
                         @else
-                            <div class="w-10 h-10 rounded-full overflow-hidden bg-blue-500 text-white flex items-center justify-center">
-                                <img src="{{ url('/daan.png') }}" alt="DaanGPT" class="w-full h-full object-cover">
+                            <div class="w-14 h-10 rounded-full overflow-hidden bg-blue-500 text-white flex items-center justify-center">
+                                <img src="{{ url('/daan.png') }}" alt="DaanGPT" class="rounded-full w-full h-full object-cover">
                             </div>
                             <div class="ml-3 p-2 bg-green-50 rounded-lg shadow text-sm">
                                 <p class="text-xs text-left text-gray-700">DaanGPT</p>
@@ -42,9 +42,6 @@
     <!-- Loading indicator -->
     <div wire:loading class="mr-5 flex items-center justify-center h-10 bg-gray-100">
         <div class="pl-5 typing-indicator flex items-center space-x-2">
-            <div class="w-10 h-10 rounded-full overflow-hidden bg-blue-500 text-white flex items-center justify-center">
-                <img src="{{ url('/daan.png') }}" alt="DaanGPT" class="w-full h-full object-cover">
-            </div>
             <div class="bubble">
                 <div class="dot"></div>
                 <div class="dot"></div>
@@ -58,7 +55,7 @@
             <input id="message" type="text" wire:model.defer="message"
                    class="flex-1 p-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
                    placeholder="Type a message..."/>
-            <button type="submit" class="bg-blue-500 text-white p-2 rounded-lg shadow">Send</button>
+            <button type="submit" class="bg-emerald-500 text-white p-2 rounded-lg shadow">Send</button>
         </form>
     </div>
 
@@ -84,6 +81,8 @@
         /* For smooth scrolling */
         #messages-container {
             scroll-behavior: smooth;
+            background: linear-gradient(to bottom left, #d4edda,#ffffff, #ffffff);
+
         }
 
         .bg-green-50 code,

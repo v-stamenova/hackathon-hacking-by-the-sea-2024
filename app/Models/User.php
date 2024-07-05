@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Group::class);
     }
+
+    protected function defaultProfilePhotoUrl()
+    {
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=2E1A34&background=D1E5CB';
+    }
 }
