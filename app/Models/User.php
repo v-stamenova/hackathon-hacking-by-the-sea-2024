@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -28,6 +29,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'score'
     ];
 
     /**
@@ -67,6 +69,38 @@ class User extends Authenticatable
     public function groups(): belongsToMany
     {
         return $this->belongsToMany(Group::class);
+    }
+
+    public function awards(): belongsToMany
+    {
+        return $this->belongsToMany(Award::class);
+    }
+
+
+    public function checkForAwards()
+    {
+        foreach (Award::all() as $award) {
+            if (!$this->awards->contains($award)) {
+                if ($award->type == 'score') {
+                    if ($this->score >= $award->baseline) {
+                        $this->awards()->attach($award);
+                    }
+                }
+            }
+        }
+    }
+
+    public function checkForGroupAwards($group)
+    {
+        foreach (Award::all() as $award) {
+            if (!$this->awards->contains($award)) {
+                if ($award->type == 'members') {
+                    if ($group->users->count() <= $award->baseline) {
+                        $this->awards()->attach($award);
+                    }
+                }
+            }
+        }
     }
 
     protected function defaultProfilePhotoUrl()

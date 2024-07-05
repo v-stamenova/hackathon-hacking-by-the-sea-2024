@@ -40,7 +40,7 @@
         </div>
     </div>
     <!-- Loading indicator -->
-    <div wire:loading class="mr-5 flex items-center justify-center h-10 bg-gray-100">
+    <div wire:loading class="mr-5 flex items-center justify-center h-10">
         <div class="pl-5 typing-indicator flex items-center space-x-2">
             <div class="bubble">
                 <div class="dot"></div>

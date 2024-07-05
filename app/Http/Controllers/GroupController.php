@@ -63,7 +63,7 @@ class GroupController extends Controller
         }
 
         $group->users()->attach(Auth::user());
-
+        Auth::user()->checkForGroupAwards($group);
 
         return redirect(route('groups.show', $group));
     }
