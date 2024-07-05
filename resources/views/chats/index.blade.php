@@ -15,7 +15,7 @@
                         <li class="flex justify-between gap-x-6 py-5">
                             <div class="flex min-w-0 gap-x-4">
                                 <div class="min-w-0 flex-auto">
-                                    <p class=" font-semibold leading-6 text-gray-900">{{$user->name}}</p>
+                                    <p class=" font-semibold leading-6 text-gray-900">{{$user->name}} @if(\Illuminate\Support\Facades\Auth::user()->id == $user->id) (Me) @endif</p>
                                 </div>
                             </div>
                             <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
