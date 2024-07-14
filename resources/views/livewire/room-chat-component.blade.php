@@ -31,7 +31,7 @@
                                 <img src="{{ url('/daan.png') }}" alt="DaanGPT"
                                      class="rounded-full w-full h-full object-cover">
                             </div>
-                            <div class="ml-3 p-2 bg-green-50 rounded-lg shadow text-sm">
+                            <div class="ml-3 p-2 bg-green-50 rounded-lg shadow text-sm relative group w-5/6">
                                 <p class="text-xs text-left text-gray-700">DaanGPT</p>
                                 <x-markdown class="messageTexts bg-green-50">
                                     {!! $message->text !!}
